@@ -37,4 +37,4 @@ SensitiveWord::search($content, true)
 
 ## License
 
-sensitive-word is licensed under [The MIT License (MIT)](https://github.com/nelsonkti/sensitive-word/blob/master/README.md).
+sensitive-word is licensed under [The MIT License (MIT)](https://github.com/nelsonkti/sensitive-word/blob/master/LICENSE).
