@@ -28,11 +28,8 @@ $ composer require nelsonkti/sensitive-word
 ```
 $path = './word.txt'
 
-// 添加敏感词
-SensitiveWordFacade::addwords($path);
-
-// content：检查内容
-SensitiveWord::search($content, true)
+// content：检查内容 filename:敏感词文件路径
+SensitiveWord::search($content, $filename)
 ```
 
 ## License

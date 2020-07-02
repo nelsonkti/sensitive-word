@@ -18,7 +18,7 @@ class SensitiveWord
      *
      * @var array
      */
-    public $trieTreeMap = array();
+    protected $trieTreeMap = array();
 
     /**
      * 干扰因子集合
@@ -26,6 +26,13 @@ class SensitiveWord
      * @var array
      */
     private $disturbList = array();
+
+    /**
+     * 文件路径
+     *
+     * @var string
+     */
+    private $filename = null;
 
     /**
      * 敏感词树
@@ -45,14 +52,50 @@ class SensitiveWord
     }
 
     /**
-     * 添加敏感词
+     * 设置文件路径
      *
-     * @param array $txtWords
+     * @param $filename
      */
-    public function addWords($filename)
+    protected function setFileName($filename)
     {
-        $text = $this->getGeneretor($filename);
-        
+        $this->filename = $filename;
+
+        return $this;
+    }
+
+    /**
+     * 获取文件内容
+     *
+     * @param $filename 文件路径
+     * @return \Generator
+     * @throws \Exception
+     */
+    protected function getFileContent()
+    {
+        $handle = fopen($this->filename, 'r');
+
+        if (!$handle) {
+            throw new \Exception('open the file failed');
+        }
+
+        while (!feof($handle)) {
+            yield str_replace(['\'', ' ', PHP_EOL, ','], '', fgets($handle));
+        }
+
+        fclose($handle);
+    }
+
+    /**
+     * 生成敏感词库集合
+     *
+     * @param $filename 文件路径
+     * @throws \Exception
+     */
+    protected function generateWords()
+    {
+        // 获取文件内容
+        $text = $this->getFileContent();
+
         foreach ($text as $key => $words) {
             $len = mb_strlen($words);
             $treeArr = &$this->trieTreeMap;
@@ -68,30 +111,30 @@ class SensitiveWord
     }
 
     /**
-     * 使用yield生成器
+     * 获取敏感词库集合
      *
-     * @param $filename
-     * @return \Generator
-     * @throws \Exception
+     * @param $filename 文件路径
      */
-    protected function getGeneretor($filename)
+    private function getTrieTreeMap()
     {
-        $handle = fopen($filename, 'r');
-        if (!$handle) {
-            throw new \Exception('read file failed');
+        $trieTreeMap = &$this->trieTreeMap;
+
+        if (!$trieTreeMap) {
+            $this->generateWords($this->filename);
         }
-        while (!feof($handle)) {
-            yield str_replace(['\'', ' ', PHP_EOL, ','], '', fgets($handle));
-        }
-        fclose($handle);
+
+        return $this;
     }
 
     /**
-     * 查找对应敏感词
-     * @param $txt
+     * 匹配对应敏感词
+     *
+     * @param $txt 内容
+     * @param bool $hasReplace 是否替换原内容
+     * @param array $replaceCodeList 替换符合
      * @return array
      */
-    public function search($txt, $hasReplace = false, &$replaceCodeList = array())
+    private function getWord($txt, $hasReplace = false, &$replaceCodeList = array())
     {
         $wordsList = array();
         $txtLength = mb_strlen($txt);
@@ -109,37 +152,51 @@ class SensitiveWord
     }
 
     /**
+     * 查找对应敏感词
+     *
+     * @param $txt 内容
+     * @param bool $hasReplace 是否替换原内容
+     * @param array $replaceCodeList 替换符合
+     * @return array
+     */
+    public function search($txt, $filename)
+    {
+        return $this->setFileName($filename)->getTrieTreeMap()->getWord($txt);
+    }
+
+    /**
      * 过滤敏感词
      *
-     * @param $txt
-     * @return mixed
+     * @param $txt 内容
+     * @param $filename 文件路径
+     * @return string|string[]
      */
-    public function filter($txt)
+    public function filter($txt, $filename)
     {
+        $filename && $this->setFileName($filename);
+
         $replaceCodeList = array();
 
-        $wordsList = $this->search($txt, true, $replaceCodeList);
-        if (empty($wordsList)) {
-            return $txt;
-        }
-        return str_replace($wordsList, $replaceCodeList, $txt);
+        $wordsList = $this->getWord($txt, true, $replaceCodeList);
+
+        return $wordsList ? str_replace($wordsList, $replaceCodeList, $txt) : $txt;
     }
 
     /**
      * 敏感词检测
      *
-     * @param $txt
-     * @param $beginIndex
-     * @param $length
+     * @param $txt 内容
+     * @param $begin 开始位置
+     * @param $length 长度
      * @return int
      */
-    private function checkWord($txt, $beginIndex, $length)
+    private function checkWord($txt, $begin, $length)
     {
         $treeArr = &$this->trieTreeMap;
         $wordLength = 0; //敏感字符个数
         $wordLengthArray = [];
         $flag = false;
-        for ($i = $beginIndex; $i < $length; $i++) {
+        for ($i = $begin; $i < $length; $i++) {
             $txtWord = mb_substr($txt, $i, 1);
 
             //如果搜索字不存在词库中直接停止循环。
@@ -160,14 +217,4 @@ class SensitiveWord
         return $wordLength;
     }
 
-    /**
-     * 干扰因子检测
-     *
-     * @param $word
-     * @return bool
-     */
-    private function checkDisturb($word)
-    {
-        return in_array($word, $this->disturbList);
-    }
 }
