@@ -13,7 +13,7 @@ class SensitiveWordServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        $this->app->singleton('Nelsonkti\SensitiveWord\SensitiveWordFacade', function ($app) {
+        $this->app->singleton('Nelsonkti\SensitiveWord\Facades\SensitiveWordFacade', function ($app) {
             return 'Nelsonkti\SensitiveWord\SensitiveWord';
         });
     }

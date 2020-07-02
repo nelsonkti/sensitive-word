@@ -1,7 +1,7 @@
 <?php
 
 
-namespace Nelsonkti\SensitiveWord;
+namespace Nelsonkti\SensitiveWord\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
