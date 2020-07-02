@@ -1,4 +1,6 @@
 # sensitive-word
+过滤敏感词，采用 DFA 算法
+> 增加包含词的过滤（如：银行、银行监控）
 
 ## Installation
 
