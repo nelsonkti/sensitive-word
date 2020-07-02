@@ -1,0 +1,22 @@
+{
+    "name": "nelsonkti/sensitive-word",
+    "description": "敏感词",
+    "keywords": ["laravel", "敏感词", "sensitive", "word", "DFA"],
+    "type": "library",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "nelsonkti",
+            "email": "nelsons.goole@gmail.com"
+        }
+    ],
+    "require": {
+        "php":">=5.6"
+    },
+    "autoload": {
+        "psr-4": {
+            "Nelsonkti\\SensitiveWord\\": "src"
+        }
+    }
+
+}
