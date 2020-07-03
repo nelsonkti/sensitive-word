@@ -16,7 +16,7 @@ $ composer require nelsonkti/sensitive-word
 ],
 
 'aliases' => [
-    'SensitiveWord' => Nelsonkti\SensitiveWord\SensitiveWordFacade::class,
+    'SensitiveWord' => Nelsonkti\SensitiveWord\SensitiveWord::class,
 ],
 ```
 

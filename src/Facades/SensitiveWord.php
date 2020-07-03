@@ -5,7 +5,7 @@ namespace Nelsonkti\SensitiveWord\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
-class SensitiveWordFacade extends Facade
+class SensitiveWord extends Facade
 {
     protected static function getFacadeAccessor()
     {

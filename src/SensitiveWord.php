@@ -66,7 +66,7 @@ class SensitiveWord
     /**
      * 获取文件内容
      *
-     * @param $filename 文件路径
+     * @param $filename "文件路径"
      * @return \Generator
      * @throws \Exception
      */
@@ -88,7 +88,7 @@ class SensitiveWord
     /**
      * 生成敏感词库集合
      *
-     * @param $filename 文件路径
+     * @param $filename "文件路径"
      * @throws \Exception
      */
     protected function generateWords()
@@ -113,7 +113,7 @@ class SensitiveWord
     /**
      * 获取敏感词库集合
      *
-     * @param $filename 文件路径
+     * @param $filename "文件路径"
      */
     private function getTrieTreeMap()
     {
@@ -129,9 +129,9 @@ class SensitiveWord
     /**
      * 匹配对应敏感词
      *
-     * @param $txt 内容
-     * @param bool $hasReplace 是否替换原内容
-     * @param array $replaceCodeList 替换符合
+     * @param $txt "内容"
+     * @param bool $hasReplace "是否替换原内容"
+     * @param array $replaceCodeList "替换符合"
      * @return array
      */
     private function getWord($txt, $hasReplace = false, &$replaceCodeList = array())
@@ -154,9 +154,9 @@ class SensitiveWord
     /**
      * 查找对应敏感词
      *
-     * @param $txt 内容
-     * @param bool $hasReplace 是否替换原内容
-     * @param array $replaceCodeList 替换符合
+     * @param $txt "内容"
+     * @param bool $hasReplace "是否替换原内容"
+     * @param array $replaceCodeList "替换符合"
      * @return array
      */
     public function search($txt, $filename)
@@ -167,8 +167,8 @@ class SensitiveWord
     /**
      * 过滤敏感词
      *
-     * @param $txt 内容
-     * @param $filename 文件路径
+     * @param $txt "内容"
+     * @param $filename "文件路径"
      * @return string|string[]
      */
     public function filter($txt, $filename)
@@ -185,9 +185,9 @@ class SensitiveWord
     /**
      * 敏感词检测
      *
-     * @param $txt 内容
-     * @param $begin 开始位置
-     * @param $length 长度
+     * @param $txt "内容"
+     * @param $begin "开始位置"
+     * @param $length "长度"
      * @return int
      */
     private function checkWord($txt, $begin, $length)
