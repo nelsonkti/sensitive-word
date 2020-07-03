@@ -1,6 +1,6 @@
 # sensitive-word
 过滤敏感词，采用 DFA 算法
-> 增加包含词的过滤（如：银行、银行监控）
+> 增加包含词的过滤（如：敏感、敏感词）
 
 ## Installation
 
@@ -28,8 +28,12 @@ $ composer require nelsonkti/sensitive-word
 ```
 $path = './word.txt'
 
-// content：检查内容 filename:敏感词文件路径
+
+$content = '敏感，敏感词'; #检查内容
+$filename = '/txt/sensitive-words.txt'； #敏感词文件路径
+
 SensitiveWord::search($content, $filename)
+
 ```
 
 ## License
