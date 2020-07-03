@@ -25,7 +25,7 @@ class SensitiveWord
      *
      * @var array
      */
-    private $disturbList = array();
+    private $disturbList = array('*');
 
     /**
      * 文件路径
@@ -48,7 +48,7 @@ class SensitiveWord
      */
     public function interference($disturbList = array())
     {
-        $this->disturbList = $disturbList;
+        $this->disturbList = $disturbList ?? $this->disturbList;
     }
 
     /**
@@ -159,7 +159,7 @@ class SensitiveWord
      * @param array $replaceCodeList "替换符合"
      * @return array
      */
-    public function search($txt, $filename)
+    public function searchWord($txt, $filename)
     {
         return $this->setFileName($filename)->getTrieTreeMap()->getWord($txt);
     }
@@ -171,13 +171,14 @@ class SensitiveWord
      * @param $filename "文件路径"
      * @return string|string[]
      */
-    public function filter($txt, $filename)
+    public function filterWord($txt, $filename)
     {
-        $filename && $this->setFileName($filename);
+        $filename && $this->setFileName($filename)->interference();
 
         $replaceCodeList = array();
 
-        $wordsList = $this->getWord($txt, true, $replaceCodeList);
+        $wordsList = $this->getTrieTreeMap()->getWord($txt, true, $replaceCodeList);
+
 
         return $wordsList ? str_replace($wordsList, $replaceCodeList, $txt) : $txt;
     }

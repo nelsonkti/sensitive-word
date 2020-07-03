@@ -26,13 +26,19 @@ $ composer require nelsonkti/sensitive-word
 
 
 ```
+use Nelsonkti\SensitiveWord\Facades\SensitiveWord;
+
 $path = './word.txt'
 
 
-$content = '敏感，敏感词'; #检查内容
+$content = '敏感，敏感词需要过滤'; #检查内容
 $filename = '/txt/sensitive-words.txt'； #敏感词文件路径
 
-SensitiveWord::search($content, $filename)
+SensitiveWord::searchWord($content, $filename);
+# 返回： array('敏感', '敏感词');
+
+SensitiveWord::filterWord($content, $filename);
+# 返回： **，**词需要过滤
 
 ```
 
