@@ -145,7 +145,7 @@ class SensitiveWord
 
                 if ($hasReplace) {
                     $wordsListArr[] = array(
-                        'lenth' => strlen($words),
+                        'length' => strlen($words),
                         'world' => $words,
                         'replace_code' => str_repeat($this->replaceCode, mb_strlen($words))
                     );
@@ -171,7 +171,8 @@ class SensitiveWord
      */
     private function sortWord($wordsListArr, &$replaceCodeList)
     {
-        array_multisort(array_column($wordsListArr, 'lenth'), SORT_DESC, $wordsListArr);
+        $array_column = array_column($wordsListArr, 'length');
+        array_multisort($array_column, SORT_DESC, $wordsListArr);
 
         $replaceCodeList = array_column($wordsListArr, 'replace_code');
 
