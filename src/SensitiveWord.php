@@ -136,19 +136,46 @@ class SensitiveWord
      */
     private function getWord($txt, $hasReplace = false, &$replaceCodeList = array())
     {
-        $wordsList = array();
+        $wordsList = $wordsList_arr = array();
         $txtLength = mb_strlen($txt);
         for ($i = 0; $i < $txtLength; $i++) {
             $wordLength = $this->checkWord($txt, $i, $txtLength);
             if ($wordLength > 0) {
                 $words = mb_substr($txt, $i, $wordLength);
-                $wordsList[] = $words;
-                $hasReplace && $replaceCodeList[] = str_repeat($this->replaceCode, mb_strlen($words));
+
+                if ($hasReplace) {
+                    $wordsList_arr[] = array(
+                        'lenth' => strlen($words),
+                        'world' => $words,
+                        'replace_code' => str_repeat($this->replaceCode, mb_strlen($words))
+                    );
+                } else {
+                    $wordsList[] = $words;
+                }
+
                 $i += $wordLength - 1;
             }
         }
 
+        $hasReplace && $wordsList = $this->sortWord($wordsList_arr, $replaceCodeList);
+
         return $wordsList;
+    }
+
+    /**
+     * 对敏感词按长度进行倒叙排序
+     *
+     * @param $wordsList
+     * @param $replaceCodeList
+     * @param $txt
+     */
+    private function sortWord($wordsList_arr, &$replaceCodeList)
+    {
+        array_multisort(array_column($wordsList_arr, 'lenth'), SORT_DESC, $wordsList_arr);
+
+        $replaceCodeList = array_column($wordsList_arr, 'replace_code');
+
+        return array_column($wordsList_arr, 'world');
     }
 
     /**
@@ -182,6 +209,7 @@ class SensitiveWord
 
         return $wordsList ? str_replace($wordsList, $replaceCodeList, $txt) : $txt;
     }
+
 
     /**
      * 敏感词检测
