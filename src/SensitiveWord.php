@@ -136,7 +136,7 @@ class SensitiveWord
      */
     private function getWord($txt, $hasReplace = false, &$replaceCodeList = array())
     {
-        $wordsList = $wordsList_arr = array();
+        $wordsList = $wordsListArr = array();
         $txtLength = mb_strlen($txt);
         for ($i = 0; $i < $txtLength; $i++) {
             $wordLength = $this->checkWord($txt, $i, $txtLength);
@@ -144,7 +144,7 @@ class SensitiveWord
                 $words = mb_substr($txt, $i, $wordLength);
 
                 if ($hasReplace) {
-                    $wordsList_arr[] = array(
+                    $wordsListArr[] = array(
                         'lenth' => strlen($words),
                         'world' => $words,
                         'replace_code' => str_repeat($this->replaceCode, mb_strlen($words))
@@ -157,7 +157,7 @@ class SensitiveWord
             }
         }
 
-        $hasReplace && $wordsList = $this->sortWord($wordsList_arr, $replaceCodeList);
+        $hasReplace && $wordsList = $this->sortWord($wordsListArr, $replaceCodeList);
 
         return $wordsList;
     }
@@ -169,13 +169,13 @@ class SensitiveWord
      * @param $replaceCodeList
      * @param $txt
      */
-    private function sortWord($wordsList_arr, &$replaceCodeList)
+    private function sortWord($wordsListArr, &$replaceCodeList)
     {
-        array_multisort(array_column($wordsList_arr, 'lenth'), SORT_DESC, $wordsList_arr);
+        array_multisort(array_column($wordsListArr, 'lenth'), SORT_DESC, $wordsListArr);
 
-        $replaceCodeList = array_column($wordsList_arr, 'replace_code');
+        $replaceCodeList = array_column($wordsListArr, 'replace_code');
 
-        return array_column($wordsList_arr, 'world');
+        return array_column($wordsListArr, 'world');
     }
 
     /**
