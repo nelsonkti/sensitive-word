@@ -38,7 +38,7 @@ SensitiveWord::searchWord($content, $filename);
 # 返回： array('敏感', '敏感词');
 
 SensitiveWord::filterWord($content, $filename);
-# 返回： **，**词需要过滤
+# 返回： **，***需要过滤
 
 ```
 
